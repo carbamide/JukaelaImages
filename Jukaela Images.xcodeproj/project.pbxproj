@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2926346D16A09E2E002BD801 /* JukaelaActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 2926346C16A09E2E002BD801 /* JukaelaActivity.m */; };
+		2926346F16A09F1A002BD801 /* shareicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2926346E16A09F1A002BD801 /* shareicon.png */; };
+		2926347116A0A122002BD801 /* jukaelashare.png in Resources */ = {isa = PBXBuildFile; fileRef = 2926347016A0A122002BD801 /* jukaelashare.png */; };
 		2933E27F169FAAA9006FA2DE /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 2933E25E169FAAA9006FA2DE /* LICENSE */; };
 		2933E280169FAAA9006FA2DE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 2933E25F169FAAA9006FA2DE /* README.md */; };
 		2933E281169FAAA9006FA2DE /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 2933E261169FAAA9006FA2DE /* SDImageCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -76,6 +79,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2926346B16A09E2E002BD801 /* JukaelaActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JukaelaActivity.h; sourceTree = "<group>"; };
+		2926346C16A09E2E002BD801 /* JukaelaActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JukaelaActivity.m; sourceTree = "<group>"; };
+		2926346E16A09F1A002BD801 /* shareicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shareicon.png; sourceTree = "<group>"; };
+		2926347016A0A122002BD801 /* jukaelashare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jukaelashare.png; sourceTree = "<group>"; };
 		2933E25E169FAAA9006FA2DE /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		2933E25F169FAAA9006FA2DE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		2933E260169FAAA9006FA2DE /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
@@ -397,6 +404,8 @@
 				2969872D169F30A400F8F1D0 /* MosaicDataView.m */,
 				2969872E169F30A400F8F1D0 /* MosaicView.h */,
 				2969872F169F30A400F8F1D0 /* MosaicView.m */,
+				2926346B16A09E2E002BD801 /* JukaelaActivity.h */,
+				2926346C16A09E2E002BD801 /* JukaelaActivity.m */,
 			);
 			name = Views;
 			path = MosaicUI/Views;
@@ -454,6 +463,8 @@
 		29698754169F46FA00F8F1D0 /* Artwork */ = {
 			isa = PBXGroup;
 			children = (
+				2926346E16A09F1A002BD801 /* shareicon.png */,
+				2926347016A0A122002BD801 /* jukaelashare.png */,
 				29698752169F469000F8F1D0 /* 57.png */,
 				29698750169F468B00F8F1D0 /* 114.png */,
 				2969874E169F465500F8F1D0 /* Default-568h@2x.png */,
@@ -545,6 +556,8 @@
 				2933E2CA169FAB42006FA2DE /* alert-red-button@2x.png in Resources */,
 				2933E2CB169FAB42006FA2DE /* alert-window.png in Resources */,
 				2933E2CC169FAB42006FA2DE /* alert-window@2x.png in Resources */,
+				2926346F16A09F1A002BD801 /* shareicon.png in Resources */,
+				2926347116A0A122002BD801 /* jukaelashare.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,6 +596,7 @@
 				2933E29F169FAB2A006FA2DE /* BlockBackground.m in Sources */,
 				2933E2A0169FAB2A006FA2DE /* BlockTextPromptAlertView.m in Sources */,
 				2933E2D5169FB24E006FA2DE /* JukaelaLabel.m in Sources */,
+				2926346D16A09E2E002BD801 /* JukaelaActivity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

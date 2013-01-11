@@ -11,6 +11,7 @@
 #import "MWZoomingScrollView.h"
 #import "MBProgressHUD.h"
 #import "SDImageCache.h"
+#import "JukaelaActivity.h"
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
 #define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
@@ -996,8 +997,10 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
         if ([self numberOfPhotos] > 0 && [photo underlyingImage]) {
             
             [self setControlsHidden:NO animated:YES permanent:YES];
-                        
-            UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[[photo caption], [photo underlyingImage]] applicationActivities:nil];
+            
+            NSArray *shareActivity = @[[[JukaelaActivity alloc] init]];
+            
+            UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[[photo caption], [photo underlyingImage]] applicationActivities:shareActivity];
             
             [activityVC  setCompletionHandler:^(NSString *activityType, BOOL completed) {
                 [self hideControlsAfterDelay];
