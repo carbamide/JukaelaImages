@@ -16,7 +16,9 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{    
+{
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"show_labels": [NSNumber numberWithBool:YES]}];
+    
     return YES;
 }
 

@@ -61,6 +61,7 @@
 		295497C816A1F9C4008B1B2A /* 57.png in Resources */ = {isa = PBXBuildFile; fileRef = 295497C716A1F9C4008B1B2A /* 57.png */; };
 		295497CA16A1F9E2008B1B2A /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 295497C916A1F9E2008B1B2A /* iTunesArtwork.png */; };
 		295497CD16A1FAB0008B1B2A /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 295497CC16A1FAB0008B1B2A /* Helpers.m */; };
+		295497CF16A2165D008B1B2A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 295497CE16A2165D008B1B2A /* Settings.bundle */; };
 		29698700169F308900F8F1D0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296986FF169F308900F8F1D0 /* UIKit.framework */; };
 		29698702169F308900F8F1D0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29698701169F308900F8F1D0 /* Foundation.framework */; };
 		29698704169F308900F8F1D0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29698703169F308900F8F1D0 /* CoreGraphics.framework */; };
@@ -163,6 +164,7 @@
 		295497C916A1F9E2008B1B2A /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
 		295497CB16A1FAB0008B1B2A /* Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
 		295497CC16A1FAB0008B1B2A /* Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helpers.m; sourceTree = "<group>"; };
+		295497CE16A2165D008B1B2A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		296986FC169F308900F8F1D0 /* Jukaela Images.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Jukaela Images.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		296986FF169F308900F8F1D0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		29698701169F308900F8F1D0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -362,6 +364,7 @@
 				2969870A169F308900F8F1D0 /* InfoPlist.strings */,
 				2969870D169F308900F8F1D0 /* main.m */,
 				2969870F169F308900F8F1D0 /* Jukaela Images-Prefix.pch */,
+				295497CE16A2165D008B1B2A /* Settings.bundle */,
 			);
 			name = "Supporting Files";
 			path = "Jukaela Images";
@@ -571,6 +574,7 @@
 				295497C616A1F9B4008B1B2A /* 72.png in Resources */,
 				295497C816A1F9C4008B1B2A /* 57.png in Resources */,
 				295497CA16A1F9E2008B1B2A /* iTunesArtwork.png in Resources */,
+				295497CF16A2165D008B1B2A /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

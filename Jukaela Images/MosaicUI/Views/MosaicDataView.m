@@ -168,6 +168,8 @@
     
     [[self titleLabel] setFrame:newRect];
     
+    [[self titleLabel] setCenter:CGPointMake(self.imageView.center.x, newRect.origin.y)];
+    
     [indicator stopAnimating];
     
     [indicator removeFromSuperview];
@@ -244,8 +246,10 @@
         [[self titleLabel] setMinimumScaleFactor:8];
         [[self titleLabel] setAdjustsFontSizeToFitWidth:YES];
         
-        [self addSubview:[self titleLabel]];
-        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"show_labels"] == YES){
+            [self addSubview:[self titleLabel]];
+        }
+                
         [[self layer] setBorderWidth:1];
         [[self layer] setBorderColor:[[UIColor blackColor] CGColor]];
         
