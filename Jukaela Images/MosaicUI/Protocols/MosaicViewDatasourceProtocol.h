@@ -11,6 +11,7 @@
 @protocol MosaicViewDatasourceProtocol <NSObject>
 
 -(NSArray *)mosaicElements;
+
 -(void)loadFromJukaela;
 -(void)refresh;
 

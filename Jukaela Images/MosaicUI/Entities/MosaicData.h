@@ -8,16 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MosaicData : NSObject{
-    NSString *imageFilename;
-    NSString *title;
-    NSInteger size;
-}
+@interface MosaicData : NSObject
 
 -(id)initWithDictionary:(NSDictionary *)aDict;
 
-@property (strong) NSString *imageFilename;
-@property (strong) NSString *title;
-@property (readwrite) NSInteger size;
+@property (strong, nonatomic) NSString *imageFilename;
+@property (strong, nonatomic) NSString *title;
+@property (readwrite, nonatomic) NSInteger size;
 
 @end

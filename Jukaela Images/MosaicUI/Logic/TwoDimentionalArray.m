@@ -14,56 +14,57 @@
 
 #pragma mark - Private
 
--(NSInteger)elementIndexWithColumn:(NSUInteger)xIndex andRow:(NSUInteger)yIndex{
+-(NSInteger)elementIndexWithColumn:(NSUInteger)xIndex andRow:(NSUInteger)yIndex
+{
     NSInteger returnValue = 0;
 
-    // Validating indexes are between columns / rows ranges
-    if (xIndex >= columns || yIndex >= rows) {
+    if (xIndex >= _columns || yIndex >= _rows) {
         returnValue = INVALID_ELEMENT_INDEX;
-    }else{
-        returnValue = xIndex + (yIndex * columns);
+    }
+    else{
+        returnValue = xIndex + (yIndex * _columns);
     }
     return returnValue;
 }
 
 #pragma mark - Public
 
--(id)initWithColumns:(NSUInteger)numberOfColumns andRows:(NSUInteger)numberOfRows{
+-(id)initWithColumns:(NSUInteger)numberOfColumns andRows:(NSUInteger)numberOfRows
+{
     self = [super init];
     if (self) {
         NSUInteger capacity = numberOfColumns * numberOfRows;
-        columns = numberOfColumns;
-        rows = numberOfRows;
-        elements = [[NSMutableArray alloc] initWithCapacity:capacity];
+        _columns = numberOfColumns;
+        _rows = numberOfRows;
+        _elements = [[NSMutableArray alloc] initWithCapacity:capacity];
         
-        for(NSInteger i=0; i<capacity; i++) {
-            [elements addObject:[NSNull null]];
+        for (NSInteger i=0; i<capacity; i++) {
+            [_elements addObject:[NSNull null]];
         }
     }
     return self;
 }
 
--(id)objectAtColumn:(NSUInteger)xIndex andRow:(NSUInteger)yIndex{
+-(id)objectAtColumn:(NSUInteger)xIndex andRow:(NSUInteger)yIndex
+{
     id returnValue = nil;
     
     NSInteger elementIndex = [self elementIndexWithColumn:xIndex andRow:yIndex];
 
-    //  If the index is not invalid (ie xIndex greater than column quantity) then...
     if (elementIndex != INVALID_ELEMENT_INDEX) {
-        
-        //  If the element in coord is not NULL then...
-        if ([elements objectAtIndex:elementIndex] != [NSNull null]) {
-            returnValue = [elements objectAtIndex:elementIndex];
+        if ([_elements objectAtIndex:elementIndex] != [NSNull null]) {
+            returnValue = [_elements objectAtIndex:elementIndex];
         }
     }
 
     return returnValue;
 }
 
--(void)setObject:(id)anObject atColumn:(NSUInteger)xIndex andRow:(NSUInteger)yIndex{
+-(void)setObject:(id)anObject atColumn:(NSUInteger)xIndex andRow:(NSUInteger)yIndex
+{
     NSInteger elementIndex = [self elementIndexWithColumn:xIndex andRow:yIndex];
     
-    [elements replaceObjectAtIndex:elementIndex withObject:anObject];
+    [_elements replaceObjectAtIndex:elementIndex withObject:anObject];
 }
 
 @end

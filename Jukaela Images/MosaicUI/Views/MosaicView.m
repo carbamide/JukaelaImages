@@ -20,19 +20,17 @@
 @end
 
 @implementation MosaicView
-@synthesize datasource, delegate;
 
 - (void)setup
 {
     _maxElementsX = -1;
     _maxElementsY = -1;
     
-    scrollView = [[UIScrollView alloc] initWithFrame:[self bounds]];
-    [scrollView setBackgroundColor:[UIColor blackColor]];
+    [self setScrollView:[[UIScrollView alloc] initWithFrame:[self bounds]]];
     
-    [self addSubview:scrollView];
+    [[self scrollView] setBackgroundColor:[UIColor blackColor]];
     
-    isFirstLayoutTime = YES;
+    [self addSubview:[self scrollView]];
 }
 
 -(void)handleRefresh:(id)sender
@@ -60,10 +58,10 @@
             NSInteger xIndex = aPoint.x + xOffset;
             NSInteger yIndex = aPoint.y + yOffset;
             
-            //  Check if the coords are valid in the bidimensional array
             if (xIndex < [self maxElementsX] && yIndex < [self maxElementsY]) {
                 
-                id anObject = [elements objectAtColumn:xIndex andRow:yIndex];
+                id anObject = [[self elements] objectAtColumn:xIndex andRow:yIndex];
+                
                 if (anObject != nil) {
                     returnValue = NO;
                 }
@@ -93,7 +91,7 @@
             NSInteger xIndex = aPoint.x + xOffset;
             NSInteger yIndex = aPoint.y + yOffset;
             
-            [elements setObject:aModule atColumn:xIndex andRow:yIndex];
+            [[self elements] setObject:aModule atColumn:xIndex andRow:yIndex];
             
             xOffset++;
         }
@@ -105,6 +103,7 @@
 - (NSArray *)coordArrayForCGSize:(CGSize)aSize
 {
     NSArray *returnValue = nil;
+    
     BOOL hasFound = NO;
     
     NSInteger i=0;
@@ -120,6 +119,7 @@
                 
                 NSNumber *xIndex = [NSNumber numberWithInteger:i];
                 NSNumber *yIndex = [NSNumber numberWithInteger:j];
+                
                 returnValue = @[xIndex, yIndex];
             }
             i++;
@@ -194,6 +194,7 @@
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         returnValue = kMaxScrollPages_iPad;
     }
+    
     return returnValue;
 }
 
@@ -206,28 +207,26 @@
     
     NSInteger scrollHeight = 0;
     
-    [scrollView setFrame:[self bounds]];
+    [[self scrollView] setFrame:[self bounds]];
     
-    for (UIView *subview in scrollView.subviews) {
+    for (UIView *subview in [[self scrollView] subviews]) {
         if ([subview tag] != 22) {
             [subview removeFromSuperview];
         }
     }
     
-    // Initial setup for the view
     NSUInteger maxElementsX = [self maxElementsX];
     NSUInteger maxElementsY = [self maxElementsY];
-    elements = [[TwoDimentionalArray alloc] initWithColumns:maxElementsX andRows:maxElementsY];
     
-    NSLog(@"Max X %d\nMaxY %d\n", maxElementsX, maxElementsY);
-    
+    [self setElements:[[TwoDimentionalArray alloc] initWithColumns:maxElementsX andRows:maxElementsY]];
+        
     CGPoint modulePoint = CGPointZero;
     
     MosaicDataView *lastModuleView = nil;
     
-    //  Set modules in scrollView
     for (MosaicData *aModule in mosaicElements) {
         CGSize aSize = [self sizeForModuleSize:aModule.size];
+        
         NSArray *coordArray = [self coordArrayForCGSize:aSize];
         
         if (coordArray) {
@@ -248,23 +247,22 @@
             [lastModuleView setDelegate:[self delegate]];
             [lastModuleView setMosaicView:self];
             
-            [scrollView addSubview:lastModuleView];
+            [[self scrollView] addSubview:lastModuleView];
             
             scrollHeight = MAX(scrollHeight, lastModuleView.frame.origin.y + lastModuleView.frame.size.height);
         }
     }
     
-    //  Setup content size
-    CGSize contentSize = CGSizeMake(scrollView.frame.size.width,scrollHeight);
+    CGSize contentSize = CGSizeMake(self.scrollView.frame.size.width,scrollHeight);
     
-    [scrollView setContentSize:contentSize];
+    [[self scrollView] setContentSize:contentSize];
     
     if (!_refreshControl) {
         _refreshControl = [[UIRefreshControl alloc] init];
         [_refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
         [_refreshControl setTag:22];
         
-        [scrollView addSubview:_refreshControl];
+        [[self scrollView] addSubview:_refreshControl];
     }
     else {
         [_refreshControl endRefreshing];

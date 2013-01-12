@@ -16,27 +16,30 @@
 
 @implementation MosaicDataView
 
-@synthesize delegate, mosaicView;
+@synthesize module = _module;
 
 #pragma mark - Private
 
 -(UIFont *)fontWithModuleSize:(NSUInteger)aSize
 {
-    
     UIFont *returnValue = nil;
     
     switch (aSize) {
         case 0:
             returnValue = [UIFont fontWithName:kMosaicDataViewFont size:24];
+            
             break;
         case 1:
             returnValue = [UIFont fontWithName:kMosaicDataViewFont size:15];
+            
             break;
         case 2:
             returnValue = [UIFont fontWithName:kMosaicDataViewFont size:14];
+            
             break;
         default:
             returnValue = [UIFont fontWithName:kMosaicDataViewFont size:14];
+            
             break;
     }
     
@@ -54,19 +57,19 @@
 
 -(NSString *)title
 {
-    NSString *returnValue = [titleLabel text];
+    NSString *returnValue = [[self titleLabel] text];
     return returnValue;
 }
 
 -(void)setTitle:(NSString *)title
 {
-    [titleLabel setText:title];
+    [[self titleLabel] setText:title];
 }
 
 -(void)setModule:(MosaicData *)newModule
 {
-    module = newModule;
-    
+    _module = newModule;
+        
     CGFloat hue = (arc4random() % 256 / 256.0);
     CGFloat saturation = (arc4random() % 128 / 256.0) + 0.5;
     CGFloat brightness = (arc4random() % 128 / 256.0) + 0.5;
@@ -82,12 +85,12 @@
     UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    [imageView setImage:img];
+    [[self imageView] setImage:img];
     
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     [indicator setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin];
-    [indicator setCenter:CGPointMake(CGRectGetMidX(imageView.bounds), CGRectGetMidY(imageView.bounds))];
+    [indicator setCenter:CGPointMake(CGRectGetMidX(self.imageView.bounds), CGRectGetMidY(self.imageView.bounds))];
     
     [self addSubview:indicator];
     
@@ -96,7 +99,7 @@
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
     dispatch_async(queue, ^{
-        NSMutableString *tempString = [NSMutableString stringWithString:[[self module] imageFilename]];
+        NSMutableString *tempString = [NSMutableString stringWithString:[_module imageFilename]];
         
         NSString *tempExtensionString = [NSString stringWithFormat:@".%@", [tempString pathExtension]];
         
@@ -110,7 +113,7 @@
         
         if (anImage) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [imageView setImage:anImage];
+                [[self imageView] setImage:anImage];
                 
                 [self finishUpWithImageView:anImage indicator:indicator];
             });
@@ -124,7 +127,7 @@
                 anImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [imageView setImage:anImage];
+                    [[self imageView] setImage:anImage];
                     
                     [[Helpers sharedInstance] saveImage:anImage withFileName:localfile];
                     
@@ -146,24 +149,24 @@
         scale = anImage.size.height / anImage.size.width;
     }
     
-    CGRect newFrame = imageView.frame;
+    CGRect newFrame = self.imageView.frame;
     newFrame.size.height /= scale;
     newFrame.size.width /= scale;
     
-    [imageView setFrame:newFrame];
-    [imageView setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
+    [[self imageView] setFrame:newFrame];
+    [[self imageView] setCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2)];
     
     NSInteger marginLeft = self.frame.size.width / 20;
     NSInteger marginBottom = self.frame.size.height / 20;
     
-    [titleLabel setText:[module title]];
-    [titleLabel setFont:[self fontWithModuleSize:[module size]]];
-    [titleLabel setNumberOfLines:3];
+    [[self titleLabel] setText:[_module title]];
+    [[self titleLabel] setFont:[self fontWithModuleSize:[_module size]]];
+    [[self titleLabel] setNumberOfLines:3];
     
-    CGSize newSize = [[module title] sizeWithFont:[titleLabel font] constrainedToSize:titleLabel.frame.size];
+    CGSize newSize = [[_module title] sizeWithFont:[[self titleLabel] font] constrainedToSize:self.titleLabel.frame.size];
     CGRect newRect = CGRectMake(marginLeft, self.frame.size.height - newSize.height - marginBottom, newSize.width, newSize.height);
     
-    [titleLabel setFrame:newRect];
+    [[self titleLabel] setFrame:newRect];
     
     [indicator stopAnimating];
     
@@ -172,7 +175,7 @@
 
 -(MosaicData *)module
 {
-    return module;
+    return _module;
 }
 
 -(void)displayHighlightAnimation
@@ -196,8 +199,8 @@
 
 -(void)simpleTapReceived:(id)sender
 {
-    if ([delegate respondsToSelector:@selector(mosaicViewDidTap:)]) {
-        [delegate mosaicViewDidTap:self];
+    if ([[self delegate] respondsToSelector:@selector(mosaicViewDidTap:)]) {
+        [[self delegate] mosaicViewDidTap:self];
     }
     
     [[self mosaicView] setSelectedDataView:self];
@@ -207,8 +210,8 @@
 
 -(void)doubleTapReceived:(id)sender
 {
-    if ([delegate respondsToSelector:@selector(mosaicViewDidDoubleTap:)]) {
-        [delegate mosaicViewDidDoubleTap:self];
+    if ([[self delegate] respondsToSelector:@selector(mosaicViewDidDoubleTap:)]) {
+        [[self delegate] mosaicViewDidDoubleTap:self];
     }
 }
 
@@ -221,26 +224,27 @@
     if (self) {
         CGRect imageViewFrame = CGRectMake(0,0,frame.size.width,frame.size.height);
         
-        imageView = [[UIImageView alloc] initWithFrame:imageViewFrame];
-        [imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [self setImageView:[[UIImageView alloc] initWithFrame:imageViewFrame]];
         
-        [self addSubview:imageView];
+        [[self imageView] setContentMode:UIViewContentModeScaleAspectFit];
+        
+        [self addSubview:[self imageView]];
         
         CGRect titleLabelFrame = CGRectMake(0, round(frame.size.height/2), frame.size.width - 10, round(frame.size.height/2));
         
-        titleLabel = [[JukaelaLabel alloc] initWithFrame:titleLabelFrame];
+        [self setTitleLabel:[[JukaelaLabel alloc] initWithFrame:titleLabelFrame]];
+                
+        [[self titleLabel] setTextAlignment:NSTextAlignmentCenter];
+        [[self titleLabel] setBackgroundColor:[UIColor clearColor]];
+        [[self titleLabel] setFont:[UIFont fontWithName:kMosaicDataViewFont size:12]];
+        [[self titleLabel] setTextColor:[UIColor whiteColor]];
+        [[self titleLabel] setShadowColor:[UIColor blackColor]];
+        [[self titleLabel] setShadowOffset:CGSizeMake(0, 1)];
+        [[self titleLabel] setNumberOfLines:1];
+        [[self titleLabel] setMinimumScaleFactor:8];
+        [[self titleLabel] setAdjustsFontSizeToFitWidth:YES];
         
-        [titleLabel setTextAlignment:NSTextAlignmentCenter];
-        [titleLabel setBackgroundColor:[UIColor clearColor]];
-        [titleLabel setFont:[UIFont fontWithName:kMosaicDataViewFont size:12]];
-        [titleLabel setTextColor:[UIColor whiteColor]];
-        [titleLabel setShadowColor:[UIColor blackColor]];
-        [titleLabel setShadowOffset:CGSizeMake(0, 1)];
-        [titleLabel setNumberOfLines:1];
-        [titleLabel setMinimumScaleFactor:8];
-        [titleLabel setAdjustsFontSizeToFitWidth:YES];
-        
-        [self addSubview:titleLabel];
+        [self addSubview:[self titleLabel]];
         
         [[self layer] setBorderWidth:1];
         [[self layer] setBorderColor:[[UIColor blackColor] CGColor]];

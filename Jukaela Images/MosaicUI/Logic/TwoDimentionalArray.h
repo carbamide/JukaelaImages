@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TwoDimentionalArray : NSObject{
-    NSMutableArray* elements;
-    NSUInteger rows, columns;
-}
+@interface TwoDimentionalArray : NSObject
+
+@property (strong, nonatomic) NSMutableArray *elements;
+@property (nonatomic) NSUInteger rows;
+@property (nonatomic) NSUInteger columns;
 
 -(id)initWithColumns:(NSUInteger)numberOfColumns andRows:(NSUInteger)numberOfRows;
 -(id)objectAtColumn:(NSUInteger)xIndex andRow:(NSUInteger)yIndex;

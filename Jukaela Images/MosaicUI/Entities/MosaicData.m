@@ -10,20 +10,21 @@
 
 @implementation MosaicData
 
-@synthesize imageFilename, title, size;
-
--(id)initWithDictionary:(NSDictionary *)aDict{
+-(id)initWithDictionary:(NSDictionary *)aDict
+{
     self = [self init];
     if (self) {
-        self.imageFilename = [aDict objectForKey:@"imageFilename"];
-        self.size = [[aDict objectForKey:@"size"] integerValue];
-        self.title = [aDict objectForKey:@"title"];
+        [self setImageFilename:aDict[@"imageFilename"]];
+        [self setSize:[aDict[@"size"] integerValue]];
+        [self setTitle:aDict[@"title"]];
     }
     return self;
 }
 
--(NSString *)description{
-    NSString *returnValue = [NSString stringWithFormat:@"%@ %@", [super description], self.title];
+-(NSString *)description
+{
+    NSString *returnValue = [NSString stringWithFormat:@"%@ %@", [super description], [self title]];
+    
     return returnValue;
 }
 
