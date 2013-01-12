@@ -15,8 +15,10 @@
 #import "MosaicViewDelegateProtocol.h"
 #import "MosaicDataView.h"
 
-@interface MosaicView : UIView{
+@interface MosaicView : UIView
+{
     TwoDimentionalArray *elements;
+    
     UIScrollView *scrollView;
     
     NSInteger _maxElementsX;
@@ -28,5 +30,7 @@
 @property (strong) id <MosaicViewDatasourceProtocol> datasource;
 @property (strong) id <MosaicViewDelegateProtocol> delegate;
 @property (strong) MosaicDataView *selectedDataView;
+
+-(void)refresh;
 
 @end

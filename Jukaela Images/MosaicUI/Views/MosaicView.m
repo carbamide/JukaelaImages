@@ -269,4 +269,9 @@
     [super layoutSubviews];
 }
 
+-(void)refresh
+{
+    [self setup];
+}
+
 @end

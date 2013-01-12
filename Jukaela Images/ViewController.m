@@ -72,6 +72,8 @@
 -(void)refresh
 {
     [[CustomMosaicDatasource sharedInstance] refresh];
+    
+    [_mosaicView refresh];
 }
 
 @end

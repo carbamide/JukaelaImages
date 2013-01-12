@@ -72,6 +72,8 @@
     elements = [[NSMutableArray alloc] init];
     
     [self loadFromJukaela];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh" object:nil];
 }
 
 @end
