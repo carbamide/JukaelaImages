@@ -12,5 +12,6 @@
 
 -(NSArray *)mosaicElements;
 -(void)loadFromJukaela;
+-(void)refresh;
 
 @end

@@ -15,6 +15,10 @@
 #define kMaxScrollPages_iPhone 4
 #define kMaxScrollPages_iPad 4
 
+@interface MosaicView ()
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
+@end
+
 @implementation MosaicView
 @synthesize datasource, delegate;
 
@@ -29,6 +33,17 @@
     [self addSubview:scrollView];
     
     isFirstLayoutTime = YES;
+}
+
+-(void)handleRefresh:(id)sender
+{
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    
+    dispatch_async(queue, ^{
+        [[self datasource] refresh];
+        
+        [self setupLayoutWithMosaicElements:[[self datasource] mosaicElements]];
+    });
 }
 
 - (BOOL)doesModuleWithCGSize:(CGSize)aSize fitsInCoord:(CGPoint)aPoint
@@ -191,23 +206,27 @@
     
     NSInteger scrollHeight = 0;
     
-    scrollView.frame = [self bounds];
+    [scrollView setFrame:[self bounds]];
     
-    for (UIView *subView in scrollView.subviews) {
-        [subView removeFromSuperview];
+    for (UIView *subview in scrollView.subviews) {
+        if ([subview tag] != 22) {
+            [subview removeFromSuperview];
+        }
     }
     
     // Initial setup for the view
     NSUInteger maxElementsX = [self maxElementsX];
     NSUInteger maxElementsY = [self maxElementsY];
-    elements = [[TwoDimentionalArray alloc] initWithColumns:maxElementsX andRows:maxElementsY];    
+    elements = [[TwoDimentionalArray alloc] initWithColumns:maxElementsX andRows:maxElementsY];
+    
+    NSLog(@"Max X %d\nMaxY %d\n", maxElementsX, maxElementsY);
     
     CGPoint modulePoint = CGPointZero;
     
     MosaicDataView *lastModuleView = nil;
     
     //  Set modules in scrollView
-    for (MosaicData *aModule in mosaicElements) {        
+    for (MosaicData *aModule in mosaicElements) {
         CGSize aSize = [self sizeForModuleSize:aModule.size];
         NSArray *coordArray = [self coordArrayForCGSize:aSize];
         
@@ -223,7 +242,7 @@
                                                  yIndex * [self moduleSizeInPoints] + yOffset,
                                                  aSize.width * [self moduleSizeInPoints],
                                                  aSize.height * [self moduleSizeInPoints]);
-                        
+            
             lastModuleView = [[MosaicDataView alloc] initWithFrame:mosaicModuleRect];
             [lastModuleView setModule:aModule];
             [lastModuleView setDelegate:[self delegate]];
@@ -239,6 +258,17 @@
     CGSize contentSize = CGSizeMake(scrollView.frame.size.width,scrollHeight);
     
     [scrollView setContentSize:contentSize];
+    
+    if (!_refreshControl) {
+        _refreshControl = [[UIRefreshControl alloc] init];
+        [_refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
+        [_refreshControl setTag:22];
+        
+        [scrollView addSubview:_refreshControl];
+    }
+    else {
+        [_refreshControl endRefreshing];
+    }
 }
 
 #pragma mark - Public

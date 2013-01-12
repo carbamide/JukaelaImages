@@ -14,6 +14,7 @@
 }
 
 + (CustomMosaicDatasource *)sharedInstance;
+
 -(void)refresh;
 
 @end
