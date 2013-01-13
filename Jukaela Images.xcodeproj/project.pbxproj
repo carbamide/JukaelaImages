@@ -72,7 +72,7 @@
 		2969871B169F308900F8F1D0 /* Jukaela_Images.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 29698719169F308900F8F1D0 /* Jukaela_Images.xcdatamodeld */; };
 		29698730169F30A400F8F1D0 /* MosaicData.m in Sources */ = {isa = PBXBuildFile; fileRef = 29698724169F30A400F8F1D0 /* MosaicData.m */; };
 		29698731169F30A400F8F1D0 /* TwoDimentionalArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 29698727169F30A400F8F1D0 /* TwoDimentionalArray.m */; };
-		29698732169F30A400F8F1D0 /* MosaicDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2969872D169F30A400F8F1D0 /* MosaicDataView.m */; };
+		29698732169F30A400F8F1D0 /* MosaicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2969872D169F30A400F8F1D0 /* MosaicCell.m */; };
 		29698733169F30A400F8F1D0 /* MosaicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2969872F169F30A400F8F1D0 /* MosaicView.m */; };
 		29698736169F30BF00F8F1D0 /* CustomMosaicDatasource.m in Sources */ = {isa = PBXBuildFile; fileRef = 29698735169F30BF00F8F1D0 /* CustomMosaicDatasource.m */; };
 		2969873A169F30D300F8F1D0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29698739169F30D300F8F1D0 /* ViewController.m */; };
@@ -183,8 +183,8 @@
 		29698727169F30A400F8F1D0 /* TwoDimentionalArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoDimentionalArray.m; sourceTree = "<group>"; };
 		29698729169F30A400F8F1D0 /* MosaicViewDatasourceProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MosaicViewDatasourceProtocol.h; sourceTree = "<group>"; };
 		2969872A169F30A400F8F1D0 /* MosaicViewDelegateProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MosaicViewDelegateProtocol.h; sourceTree = "<group>"; };
-		2969872C169F30A400F8F1D0 /* MosaicDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MosaicDataView.h; sourceTree = "<group>"; };
-		2969872D169F30A400F8F1D0 /* MosaicDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MosaicDataView.m; sourceTree = "<group>"; };
+		2969872C169F30A400F8F1D0 /* MosaicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MosaicCell.h; sourceTree = "<group>"; };
+		2969872D169F30A400F8F1D0 /* MosaicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MosaicCell.m; sourceTree = "<group>"; };
 		2969872E169F30A400F8F1D0 /* MosaicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MosaicView.h; sourceTree = "<group>"; };
 		2969872F169F30A400F8F1D0 /* MosaicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MosaicView.m; sourceTree = "<group>"; };
 		29698734169F30BF00F8F1D0 /* CustomMosaicDatasource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomMosaicDatasource.h; path = MosaicUI/CustomMosaicDatasource.h; sourceTree = "<group>"; };
@@ -410,8 +410,8 @@
 		2969872B169F30A400F8F1D0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				2969872C169F30A400F8F1D0 /* MosaicDataView.h */,
-				2969872D169F30A400F8F1D0 /* MosaicDataView.m */,
+				2969872C169F30A400F8F1D0 /* MosaicCell.h */,
+				2969872D169F30A400F8F1D0 /* MosaicCell.m */,
 				2969872E169F30A400F8F1D0 /* MosaicView.h */,
 				2969872F169F30A400F8F1D0 /* MosaicView.m */,
 				2926346B16A09E2E002BD801 /* JukaelaActivity.h */,
@@ -590,7 +590,7 @@
 				2969871B169F308900F8F1D0 /* Jukaela_Images.xcdatamodeld in Sources */,
 				29698730169F30A400F8F1D0 /* MosaicData.m in Sources */,
 				29698731169F30A400F8F1D0 /* TwoDimentionalArray.m in Sources */,
-				29698732169F30A400F8F1D0 /* MosaicDataView.m in Sources */,
+				29698732169F30A400F8F1D0 /* MosaicCell.m in Sources */,
 				29698733169F30A400F8F1D0 /* MosaicView.m in Sources */,
 				29698736169F30BF00F8F1D0 /* CustomMosaicDatasource.m in Sources */,
 				2969873A169F30D300F8F1D0 /* ViewController.m in Sources */,

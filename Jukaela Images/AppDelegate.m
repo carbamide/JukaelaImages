@@ -19,6 +19,8 @@
 {
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"show_labels": [NSNumber numberWithBool:YES]}];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(screenDidConnect:) name:UIScreenDidConnectNotification object:nil];
+
     return YES;
 }
 
@@ -108,6 +110,32 @@
 - (NSURL *)applicationDocumentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+- (void)myScreenInit:(UIScreen *)connectedScreen andViewController:(UIViewController*)myNewViewController
+{
+    //Intitialise TV Screen
+    if(!_windowTV)
+    {
+        CGRect frame = connectedScreen.bounds;
+        
+        [self setWindowTV:[[UIWindow alloc] initWithFrame:frame]];
+        [[self windowTV] setBackgroundColor:[UIColor clearColor]];
+        [[self windowTV] setScreen:connectedScreen];
+        [[self windowTV] setHidden:NO];
+    }
+    
+    [self setTvController:myNewViewController];
+}
+
+- (void)setTvController:(UIViewController*)mynewViewController
+{
+    [[self windowTV] setRootViewController:mynewViewController];
+}
+
+- (void)screenDidConnect:(NSNotification *)notification
+{
+    [self myScreenInit:[notification object] andViewController:[[ViewController alloc] init]];
 }
 
 @end

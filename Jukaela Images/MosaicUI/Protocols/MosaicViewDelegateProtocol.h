@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class MosaicDataView;
+@class MosaicCell;
 
 @protocol MosaicViewDelegateProtocol <NSObject>
 
--(void)mosaicViewDidTap:(MosaicDataView *)aModule;
--(void)mosaicViewDidDoubleTap:(MosaicDataView *)aModule;
+-(void)mosaicViewDidTap:(MosaicCell *)aModule;
+-(void)mosaicViewDidDoubleTap:(MosaicCell *)aModule;
 
 @end

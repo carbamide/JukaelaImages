@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "MosaicData.h"
-#import "MosaicDataView.h"
+#import "MosaicCell.h"
 #import "CustomMosaicDatasource.h"
 #import "AppDelegate.h"
 
@@ -35,7 +35,7 @@
     [super didReceiveMemoryWarning];
 }
 
--(void)mosaicViewDidTap:(MosaicDataView *)aModule
+-(void)mosaicViewDidTap:(MosaicCell *)aModule
 {
     NSURL *urlOfImage = [NSURL URLWithString:[[aModule module] imageFilename]];
         
@@ -51,7 +51,7 @@
     [self presentViewController:navController animated:YES completion:nil];
 }
 
--(void)mosaicViewDidDoubleTap:(MosaicDataView *)aModule
+-(void)mosaicViewDidDoubleTap:(MosaicCell *)aModule
 {
     return;
 }
@@ -70,10 +70,12 @@
 }
 
 -(void)refresh
-{
-    [[CustomMosaicDatasource sharedInstance] refresh];
+{    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
-    [_mosaicView refresh];
+    dispatch_async(queue, ^{        
+        [_mosaicView refresh];
+    });
 }
 
 @end

@@ -6,15 +6,14 @@
 //  Copyright (c) 2012 betzerra. All rights reserved.
 //
 
-#import "MosaicDataView.h"
+#import "MosaicCell.h"
 #import "MosaicView.h"
 #import "JukaelaLabel.h"
 #import "Helpers.h"
 
-#define kMosaicDataViewDidTouchNotification @"kMosaicDataViewDidTouchNotification"
 #define kMosaicDataViewFont @"Helvetica"
 
-@implementation MosaicDataView
+@implementation MosaicCell
 
 @synthesize module = _module;
 
@@ -46,18 +45,10 @@
     return returnValue;
 }
 
--(void)mosaicViewDidTouch:(NSNotification *)aNotification
-{
-    MosaicDataView *aView = [[aNotification userInfo] objectForKey:@"mosaicDataView"];
-    
-    if (aView != self) {
-        //a different cell has been selected
-    }
-}
-
 -(NSString *)title
 {
     NSString *returnValue = [[self titleLabel] text];
+    
     return returnValue;
 }
 
@@ -87,14 +78,14 @@
     
     [[self imageView] setImage:img];
     
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
-    [indicator setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin];
-    [indicator setCenter:CGPointMake(CGRectGetMidX(self.imageView.bounds), CGRectGetMidY(self.imageView.bounds))];
+    [_indicator setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin];
+    [_indicator setCenter:CGPointMake(CGRectGetMidX(self.imageView.bounds), CGRectGetMidY(self.imageView.bounds))];
     
-    [self addSubview:indicator];
+    [self addSubview:_indicator];
     
-    [indicator startAnimating];
+    [_indicator startAnimating];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
@@ -115,7 +106,14 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[self imageView] setImage:anImage];
                 
-                [self finishUpWithImageView:anImage indicator:indicator];
+                CATransition *transition = [CATransition animation];
+                [transition setDuration:1];
+                [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+                [transition setType:kCATransitionFade];
+                
+                [[[self imageView] layer] addAnimation:transition forKey:nil];
+                
+                [self finishUpWithImageView:anImage indicator:_indicator];
             });
         }
         else {
@@ -129,9 +127,16 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[self imageView] setImage:anImage];
                     
+                    CATransition *transition = [CATransition animation];
+                    [transition setDuration:1];
+                    [transition setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+                    [transition setType:kCATransitionFade];
+                    
+                    [[[self imageView] layer] addAnimation:transition forKey:nil];
+                    
                     [[Helpers sharedInstance] saveImage:anImage withFileName:localfile];
                     
-                    [self finishUpWithImageView:anImage indicator:indicator];
+                    [self finishUpWithImageView:anImage indicator:_indicator];
                 });
             });
         }
@@ -164,15 +169,13 @@
     [[self titleLabel] setNumberOfLines:3];
     
     CGSize newSize = [[_module title] sizeWithFont:[[self titleLabel] font] constrainedToSize:self.titleLabel.frame.size];
-    CGRect newRect = CGRectMake(marginLeft, self.frame.size.height - newSize.height - marginBottom, newSize.width, newSize.height);
+    CGRect newRect = CGRectMake(marginLeft, self.frame.size.height - newSize.height - marginBottom, newSize.width + 15, newSize.height + 15);
     
     [[self titleLabel] setFrame:newRect];
     
     [[self titleLabel] setCenter:CGPointMake(self.imageView.center.x, newRect.origin.y)];
     
     [indicator stopAnimating];
-    
-    [indicator removeFromSuperview];
 }
 
 -(MosaicData *)module
@@ -182,10 +185,6 @@
 
 -(void)displayHighlightAnimation
 {
-    NSDictionary *aDict = @{@"mosaicDataView" : self};
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMosaicDataViewDidTouchNotification object:nil userInfo:aDict];
-    
     [self setAlpha:0.3];
     
     [UIView animateWithDuration:0.5
@@ -245,6 +244,8 @@
         [[self titleLabel] setNumberOfLines:1];
         [[self titleLabel] setMinimumScaleFactor:8];
         [[self titleLabel] setAdjustsFontSizeToFitWidth:YES];
+        [[self titleLabel] setClipsToBounds:NO];
+        [[[self titleLabel] layer] setMasksToBounds:NO];
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"show_labels"] == YES){
             [self addSubview:[self titleLabel]];
@@ -254,8 +255,6 @@
         [[self layer] setBorderColor:[[UIColor blackColor] CGColor]];
         
         [self setClipsToBounds:YES];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mosaicViewDidTouch:) name:kMosaicDataViewDidTouchNotification object:nil];
         
         UITapGestureRecognizer *simpleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(simpleTapReceived:)];
         

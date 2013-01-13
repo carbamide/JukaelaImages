@@ -13,13 +13,13 @@
 
 #import "MosaicViewDatasourceProtocol.h"
 #import "MosaicViewDelegateProtocol.h"
-#import "MosaicDataView.h"
+#import "MosaicCell.h"
 
-@interface MosaicView : UIView
+@interface MosaicView : UIView <UIScrollViewDelegate>
 
 @property (strong) id <MosaicViewDatasourceProtocol> datasource;
 @property (strong) id <MosaicViewDelegateProtocol> delegate;
-@property (strong) MosaicDataView *selectedDataView;
+@property (strong) MosaicCell *selectedDataView;
 
 @property (strong, nonatomic) TwoDimentionalArray *elements;
 @property (strong, nonatomic) UIScrollView *scrollView;

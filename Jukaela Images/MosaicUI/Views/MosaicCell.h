@@ -12,7 +12,7 @@
 #import "MosaicViewDelegateProtocol.h"
 @class MosaicView;
 
-@interface MosaicDataView : UIView <UIGestureRecognizerDelegate>
+@interface MosaicCell : UIView <UIGestureRecognizerDelegate>
 {
     MosaicData *_module;
 }
@@ -20,6 +20,7 @@
 @property (strong, nonatomic) UIImageView *imageView;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) NSString *title;
+@property (strong, nonatomic) UIActivityIndicatorView *indicator;
 @property (strong, nonatomic) MosaicData *module;
 @property (weak, nonatomic) MosaicView *mosaicView;
 @property (weak, nonatomic) id delegate;

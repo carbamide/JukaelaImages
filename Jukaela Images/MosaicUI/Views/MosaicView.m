@@ -8,7 +8,7 @@
 
 #import "MosaicView.h"
 #import "MosaicData.h"
-#import "MosaicDataView.h"
+#import "MosaicCell.h"
 
 #define kModuleSizeInPoints_iPhone 80
 #define kModuleSizeInPoints_iPad 128
@@ -17,6 +17,7 @@
 
 @interface MosaicView ()
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
+@property (strong, nonatomic) NSMutableSet *reuseCells;
 @end
 
 @implementation MosaicView
@@ -29,6 +30,7 @@
     [self setScrollView:[[UIScrollView alloc] initWithFrame:[self bounds]]];
     
     [[self scrollView] setBackgroundColor:[UIColor blackColor]];
+    [[self scrollView] setDelegate:self];
     
     [self addSubview:[self scrollView]];
 }
@@ -40,7 +42,9 @@
     dispatch_async(queue, ^{
         [[self datasource] refresh];
         
-        [self setupLayoutWithMosaicElements:[[self datasource] mosaicElements]];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self setupLayoutWithMosaicElements:[[self datasource] mosaicElements]];
+        });
     });
 }
 
@@ -59,7 +63,6 @@
             NSInteger yIndex = aPoint.y + yOffset;
             
             if (xIndex < [self maxElementsX] && yIndex < [self maxElementsY]) {
-                
                 id anObject = [[self elements] objectAtColumn:xIndex andRow:yIndex];
                 
                 if (anObject != nil) {
@@ -219,10 +222,10 @@
     NSUInteger maxElementsY = [self maxElementsY];
     
     [self setElements:[[TwoDimentionalArray alloc] initWithColumns:maxElementsX andRows:maxElementsY]];
-        
+    
     CGPoint modulePoint = CGPointZero;
     
-    MosaicDataView *lastModuleView = nil;
+    MosaicCell *lastModuleView = nil;
     
     for (MosaicData *aModule in mosaicElements) {
         CGSize aSize = [self sizeForModuleSize:aModule.size];
@@ -242,7 +245,8 @@
                                                  aSize.width * [self moduleSizeInPoints],
                                                  aSize.height * [self moduleSizeInPoints]);
             
-            lastModuleView = [[MosaicDataView alloc] initWithFrame:mosaicModuleRect];
+            lastModuleView = [[MosaicCell alloc] initWithFrame:mosaicModuleRect];
+            
             [lastModuleView setModule:aModule];
             [lastModuleView setDelegate:[self delegate]];
             [lastModuleView setMosaicView:self];
@@ -267,6 +271,8 @@
     else {
         [_refreshControl endRefreshing];
     }
+    
+    [[self scrollView] setNeedsDisplay];
 }
 
 #pragma mark - Public
@@ -299,7 +305,53 @@
 
 -(void)refresh
 {
-    [self setup];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        for (MosaicCell *cell in [self cellSubviews]) {
+            [[cell indicator] startAnimating];
+        }
+    });
+    
+    [self handleRefresh:nil];
+}
+
+-(NSArray *)cellSubviews
+{
+    NSMutableArray *cells = [[NSMutableArray alloc] init];
+    
+    for (UIView *subview in [_scrollView subviews]) {
+        if ([subview isKindOfClass:[MosaicCell class]]) {
+            [cells addObject:subview];
+        }
+    }
+    return cells;
+}
+
+-(NSArray *)visibleCells
+{
+    NSMutableArray *cells = [[NSMutableArray alloc] init];
+    
+    for (UIView *subview in [self cellSubviews]) {
+        if (CGRectIntersectsRect([[self scrollView] bounds], [subview frame])) {
+            [cells addObject:subview];
+        }
+    }
+    
+    return cells;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    float topEdge = scrollView.contentOffset.y;
+    
+    float bottomEdge = scrollView.contentOffset.y + scrollView.frame.size.height;
+    
+    if (topEdge == 0) {
+        NSLog(@"At the top of the scrollview");
+    }
+    
+    if (bottomEdge >= scrollView.contentSize.height) {
+        NSLog(@"This is probably useful information.  Scrollview is at the bottom.");
+    }
 }
 
 @end

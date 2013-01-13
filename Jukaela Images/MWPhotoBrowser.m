@@ -43,11 +43,10 @@
 	UIToolbar *_toolbar;
 	NSTimer *_controlVisibilityTimer;
 	UIBarButtonItem *_previousButton, *_nextButton, *_actionButton;
-    UIActivityViewController *_activityViewController;
     MBProgressHUD *_progressHUD;
     
     // Appearance
-    UIImage *_navigationBarBackgroundImageDefault, 
+    UIImage *_navigationBarBackgroundImageDefault,
     *_navigationBarBackgroundImageLandscapePhone;
     UIColor *_previousNavBarTintColor;
     UIBarStyle _previousNavBarStyle;
@@ -67,7 +66,6 @@
 @property (nonatomic, retain) UIColor *previousNavBarTintColor;
 @property (nonatomic, retain) UIBarButtonItem *previousViewControllerBackButton;
 @property (nonatomic, retain) UIImage *navigationBarBackgroundImageDefault, *navigationBarBackgroundImageLandscapePhone;
-@property (nonatomic, retain) UIActivityViewController *activityViewController;
 @property (nonatomic, retain) MBProgressHUD *progressHUD;
 
 // Private Methods
@@ -136,7 +134,7 @@
 @synthesize previousNavBarTintColor = _previousNavBarTintColor;
 @synthesize navigationBarBackgroundImageDefault = _navigationBarBackgroundImageDefault,
 navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandscapePhone;
-@synthesize displayActionButton = _displayActionButton, activityViewController = _activityViewController;
+@synthesize displayActionButton = _displayActionButton;
 @synthesize progressHUD = _progressHUD;
 @synthesize previousViewControllerBackButton = _previousViewControllerBackButton;
 
@@ -742,7 +740,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     NSUInteger i;
     if (index > 0) {
         // Release anything < index - 1
-        for (i = 0; i < index-1; i++) { 
+        for (i = 0; i < index-1; i++) {
             id photo = [_photos objectAtIndex:i];
             if (photo != [NSNull null]) {
                 [photo unloadUnderlyingImage];
@@ -860,7 +858,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     
 	// Title
 	if ([self numberOfPhotos] > 1) {
-		self.title = [NSString stringWithFormat:@"%i %@ %i", _currentPageIndex+1, NSLocalizedString(@"of", @"Used in the context: 'Showing 1 of 3 items'"), [self numberOfPhotos]];		
+		self.title = [NSString stringWithFormat:@"%i %@ %i", _currentPageIndex+1, NSLocalizedString(@"of", @"Used in the context: 'Showing 1 of 3 items'"), [self numberOfPhotos]];
 	} else {
 		self.title = nil;
 	}
@@ -991,19 +989,19 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 
 - (void)actionButtonPressed:(id)sender {
     
-        id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
+    id <MWPhoto> photo = [self photoAtIndex:_currentPageIndex];
     
-        if ([self numberOfPhotos] > 0 && [photo underlyingImage]) {
-            
-            [self setControlsHidden:NO animated:YES permanent:YES];
-            
-            UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[[photo caption], [photo underlyingImage]] applicationActivities:nil];
-            
-            [activityVC  setCompletionHandler:^(NSString *activityType, BOOL completed) {
-                [self hideControlsAfterDelay];
-            }];
-            
-            [self presentViewController:activityVC animated:TRUE completion:nil];
+    if ([self numberOfPhotos] > 0 && [photo underlyingImage]) {
+        
+        [self setControlsHidden:NO animated:YES permanent:YES];
+        
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[[photo caption], [photo underlyingImage], [NSURL URLWithString:@"http://social.jukaela.com"]] applicationActivities:nil];
+        
+        [activityVC  setCompletionHandler:^(NSString *activityType, BOOL completed) {
+            [self hideControlsAfterDelay];
+        }];
+        
+        [self presentViewController:activityVC animated:TRUE completion:nil];
     }
 }
 
@@ -1059,7 +1057,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 
 - (void)actuallySavePhoto:(id<MWPhoto>)photo {
     if ([photo underlyingImage]) {
-        UIImageWriteToSavedPhotosAlbum([photo underlyingImage], self, 
+        UIImageWriteToSavedPhotosAlbum([photo underlyingImage], self,
                                        @selector(image:didFinishSavingWithError:contextInfo:), nil);
     }
 }
